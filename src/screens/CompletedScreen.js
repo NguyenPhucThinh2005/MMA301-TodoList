@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Platform, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Plus, Calendar, CalendarDays } from 'lucide-react-native';
+import { Sun, Moon, CalendarDays } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { loadTodos, saveTodos } from '../utils/storage';
 import TodoItem from '../components/TodoItem';
 import { AnimatePresence } from 'moti';
 
-export default function HomeScreen({ navigation }) {
+export default function CompletedScreen({ navigation }) {
   const [todos, setTodos] = useState([]);
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const insets = useSafeAreaInsets();
@@ -35,7 +35,7 @@ export default function HomeScreen({ navigation }) {
   const handleDelete = (id) => {
     Alert.alert(
       "Delete Task",
-      "Are you sure you want to delete this task?",
+      "Are you sure you want to delete this completed task?",
       [
         {
           text: "Cancel",
@@ -58,7 +58,7 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate('Edit', { todo });
   };
 
-  const completedCount = todos.filter(t => t.completed).length;
+  const completedTodos = todos.filter(t => t.completed);
 
   return (
     <View className="flex-1 bg-[#E9E9F3] dark:bg-slate-900">
@@ -77,10 +77,10 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <FlatList
-        data={todos}
+        data={completedTodos}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: insets.bottom + 100, paddingTop: 20 }}
+        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 24, paddingTop: 20 }}
         renderItem={({ item }) => (
           <AnimatePresence>
             <TodoItem
@@ -95,30 +95,15 @@ export default function HomeScreen({ navigation }) {
         )}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center mt-32">
-            <View className="w-24 h-24 bg-indigo-100 dark:bg-indigo-900/30 rounded-full items-center justify-center mb-6">
-              <Text className="text-4xl">📝</Text>
+            <View className="w-24 h-24 bg-green-100 dark:bg-green-900/30 rounded-full items-center justify-center mb-6">
+              <Text className="text-4xl">🏆</Text>
             </View>
             <Text className="text-slate-500 dark:text-slate-400 text-lg text-center font-medium">
-              No tasks yet.{'\n'}Add one to get started!
+              No completed tasks yet.{'\n'}Keep up the good work!
             </Text>
           </View>
         }
       />
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Add')}
-        className="absolute right-6 w-16 h-16 bg-[#A3A3DF] dark:bg-indigo-600 rounded-full items-center justify-center active:bg-[#8B8BCE] dark:active:bg-indigo-700"
-        style={{ 
-          bottom: Math.max(insets.bottom + 24, 24),
-          elevation: 8,
-          shadowColor: '#4F46E5',
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.3,
-          shadowRadius: 8,
-        }}
-      >
-        <Plus size={32} color="#ffffff" />
-      </TouchableOpacity>
     </View>
   );
 }

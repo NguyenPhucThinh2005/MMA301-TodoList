@@ -7,6 +7,7 @@ import { loadTodos, saveTodos } from '../utils/storage';
 
 export default function AddScreen({ navigation }) {
   const [title, setTitle] = useState('');
+  const [detail, setDetail] = useState('');
   const { colorScheme } = useColorScheme();
   const insets = useSafeAreaInsets();
   
@@ -21,6 +22,7 @@ export default function AddScreen({ navigation }) {
     const newTodo = {
       id: Date.now().toString(),
       title: title.trim(),
+      detail: detail.trim(),
       completed: false,
       createdAt: new Date().toISOString(),
     };
@@ -51,14 +53,28 @@ export default function AddScreen({ navigation }) {
               What do you need to do?
             </Text>
             <TextInput
-              className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xl font-medium p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
+              className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xl font-medium p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm mb-6"
               style={Platform.OS === 'ios' ? { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8 } : { elevation: 1 }}
               placeholder="e.g. Finish the assignment"
               placeholderTextColor={placeholderColor}
               value={title}
               onChangeText={setTitle}
               autoFocus
-              onSubmitEditing={handleAdd}
+              onSubmitEditing={() => {}}
+            />
+
+            <Text className="text-slate-500 dark:text-slate-400 font-semibold mb-3 ml-1 uppercase tracking-wider text-xs">
+              Details (Optional)
+            </Text>
+            <TextInput
+              className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-base p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm min-h-[100px]"
+              style={Platform.OS === 'ios' ? { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8 } : { elevation: 1 }}
+              placeholder="Add some details..."
+              placeholderTextColor={placeholderColor}
+              value={detail}
+              onChangeText={setDetail}
+              multiline
+              textAlignVertical="top"
             />
           </View>
 

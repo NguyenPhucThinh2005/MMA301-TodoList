@@ -41,6 +41,16 @@ export default function TodoItem({ todo, onToggle, onEdit, onDelete, colorScheme
           >
             {todo.title}
           </Text>
+          {todo.detail ? (
+            <Text 
+              className={`text-sm mt-0.5 ${
+                todo.completed ? 'text-slate-400/70 dark:text-slate-500/70 line-through' : 'text-slate-500 dark:text-slate-400'
+              }`}
+              numberOfLines={2}
+            >
+              {todo.detail}
+            </Text>
+          ) : null}
         </View>
       </TouchableOpacity>
 
